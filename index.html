@@ -1,34 +1,68 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de E-mail/Login</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
-        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
-        input { width: 100%; max-width: 400px; font-size: 16px; text-align: center; padding: 10px; margin-top: 20px; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Gerador de E-mail e Senha</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; margin: 10px; }
+    input { width: 100%; max-width: 400px; font-size: 16px; text-align: center; padding: 10px; margin-top: 10px; }
+  </style>
 </head>
 <body>
-    <button onclick="gerarEmail()">Gerar E-mail/Login</button>
-    <input type="text" id="emailOutput" readonly>
-    
-    <script>
-        function gerarEmail() {
-            let uuid = gerarUUID();
-            let email = uuid + "@email.com";
-            document.getElementById("emailOutput").value = email;
-            document.getElementById("emailOutput").select();
-            document.execCommand("copy");
-        }
 
-        function gerarUUID() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-        }
-    </script>
+  <h2>Gerador de E-mail</h2>
+  <button onclick="gerarEmail()">Gerar E-mail/Login</button>
+  <input type="text" id="emailOutput" readonly>
+
+  <h2>Gerador de Senha</h2>
+  <button onclick="gerarSenha()">Gerar Senha Segura</button>
+  <input type="text" id="senhaOutput" readonly>
+
+  <script>
+    function gerarUUID() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    function gerarEmail() {
+      let uuid = gerarUUID();
+      let email = uuid + "@email.com";
+      document.getElementById("emailOutput").value = email;
+      document.getElementById("emailOutput").select();
+      document.execCommand("copy");
+    }
+
+    function gerarSenha() {
+      const minLength = 12;
+      const letrasMaiusculas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const letrasMinusculas = 'abcdefghijklmnopqrstuvwxyz';
+      const numeros = '0123456789';
+      const especiais = '!@#$%^&';
+
+      let senha = [
+        letrasMaiusculas[Math.floor(Math.random() * letrasMaiusculas.length)],
+        letrasMinusculas[Math.floor(Math.random() * letrasMinusculas.length)],
+        numeros[Math.floor(Math.random() * numeros.length)],
+        especiais[Math.floor(Math.random() * especiais.length)]
+      ];
+
+      const todosCaracteres = letrasMaiusculas + letrasMinusculas + numeros + especiais;
+
+      while (senha.length < minLength) {
+        senha.push(todosCaracteres[Math.floor(Math.random() * todosCaracteres.length)]);
+      }
+
+      senha = senha.sort(() => Math.random() - 0.5).join('');
+
+      document.getElementById("senhaOutput").value = senha;
+      document.getElementById("senhaOutput").select();
+      document.execCommand("copy");
+    }
+  </script>
+
 </body>
 </html>
+
